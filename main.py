@@ -6,8 +6,9 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello():
-    tap()
+def index():
+    title, author, poem, years, url = tap()
+    return render_template('index.html', title=title, author=author, poem=poem, years=years, url=url)
 
 
 @app.route('/time')
@@ -22,4 +23,4 @@ def about():
 
 @app.route('/api/poem')
 def get_random_poem():
-    tap()
+    return tap()

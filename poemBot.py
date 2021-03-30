@@ -1,14 +1,12 @@
 #!/usr/bin/python
-
+# main.py
 from __future__ import print_function
-# import RPi.GPIO as GPIO
 import subprocess
 import time
 import socket
 import csv
 import textwrap
 import random
-# from thermalPrinter import *
 
 
 def printPoem():
@@ -25,14 +23,22 @@ def printPoem():
         wrappedLine = textwrap.fill(line, width=32, subsequent_indent="    ")
         wrappedPoem += wrappedLine + "\n"
     # print the poem
-    return (wrappedTitle, '\n', wrappedPoem, '\n',
-            wrappedAuthor, '\n', randPoem[4], '\n', randPoem[0])
+    # return (wrappedTitle, '\n', wrappedPoem, '\n',
+        # wrappedAuthor, '\n', randPoem[4], '\n', randPoem[0])
+    years = str(randPoem[4]) + '\n'
+    author = str(wrappedTitle) + '\n'
+    poem = wrappedAuthor + '\n'
+    url = str(randPoem[3]) + '\n'
+    title = randPoem[0] + '\n'
 
-
+    # return title + '\n' + author + '\n' + poem + '\n' + years + '\n' + url
+    return title, author, poem, years, url
 # Print random poem, called on tap
+
+
 def tap():
     # print a random poem
-    printPoem()
+    return printPoem()
 
 
 def hold():
