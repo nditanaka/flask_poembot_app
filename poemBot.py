@@ -33,7 +33,13 @@ def printPoem():
 
     # return title + '\n' + author + '\n' + poem + '\n' + years + '\n' + url
     return title, author, poem, years, url
+    # return url
 # Print random poem, called on tap
+
+
+def getURL():
+    randPoem = random.choice(allPoems)
+    return randPoem[3]
 
 
 def tap():
