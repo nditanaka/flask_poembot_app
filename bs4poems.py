@@ -23,14 +23,19 @@ def getbs4Poems():
     date = Markup(
         str(soup.find('span', attrs={'class': 'dates'})))
     author = Markup(
-        str(soup.find('a', attrs={'author': 'author'})))
+        str(soup.find('a', attrs={'itemprop': 'author'})))
+
+    # instructions = recipeSoup.find("span", itemprop="name")
     url = str(URL)
     # handle poem's whose URL has changed and can't scrape poem info
     if date == None:
-        date = "Sorry, this poem's URL has changed"
+        date = " "
     if author == None:
-        author = "Sorry, this poem's URL has changed"
+        # card-subtitle
+        author = Markup(
+            str(soup.find('a', attrs={'itemprop': 'card-subtitle'})))
     if title == None:
         title = "Sorry, this poem's URL has changed"
+    print('author', author)
 
     return [title, author, date, poem, url]
