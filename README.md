@@ -1,13 +1,19 @@
 # flask_poembot_app
 
-source /Users/tanaka/Desktop/poembot/venv/bin/activate
+![alt text](screenshot_desktop.png)
 
-export FLASK_APP=main.py
+## Setup instructions
 
-flask run
+Run the following commands:
 
-Access site at port 5000
+1. source /Users/tanaka/Desktop/poembot/venv/bin/activate
 
-Deploying to cloud:
+2. export FLASK_APP=main.py
+
+3. flask run
+
+4. Finally, access the site locally at port 5000
+
+## Deploying to cloud
 
 gcloud app deploy

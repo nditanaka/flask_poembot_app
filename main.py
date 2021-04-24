@@ -1,7 +1,6 @@
 import time
 from flask import Flask, request, render_template, jsonify, make_response
-from poemBot import tap, getURL
-from bs4poems import getbs4Poems
+from poemBot import getURL, getbs4Poems
 
 app = Flask(__name__)
 
@@ -24,8 +23,3 @@ def get_current_time():
 @app.route('/api/about')
 def about():
     return 'This is the about page'
-
-
-@app.route('/api/poem')
-def get_random_poem():
-    return tap()

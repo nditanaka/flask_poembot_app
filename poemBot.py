@@ -7,49 +7,9 @@ import socket
 import csv
 import textwrap
 import random
-
-
-def printPoem():
-    # get a random poem
-    randPoem = random.choice(allPoems)
-    # nicely wrap the content for the printer
-    # Title and Author are printed in 'M' medium font, limit is 32 character per line
-    # poem is printed in 'S' small font, limit is 32 characters per line
-    # book and publisher are in "fontB", limit is 42 character per line
-    wrappedTitle = textwrap.fill(randPoem[1], width=32)
-    wrappedAuthor = textwrap.fill(randPoem[2], width=32)
-    wrappedPoem = ""
-    for line in randPoem[3].splitlines():
-        wrappedLine = textwrap.fill(line, width=32, subsequent_indent="    ")
-        wrappedPoem += wrappedLine + "\n"
-    # print the poem
-    # return (wrappedTitle, '\n', wrappedPoem, '\n',
-        # wrappedAuthor, '\n', randPoem[4], '\n', randPoem[0])
-    years = str(randPoem[4]) + '\n'
-    author = str(wrappedTitle) + '\n'
-    poem = wrappedAuthor + '\n'
-    url = str(randPoem[3]) + '\n'
-    title = randPoem[0] + '\n'
-
-    # return title + '\n' + author + '\n' + poem + '\n' + years + '\n' + url
-    return title, author, poem, years, url
-    # return url
-# Print random poem, called on tap
-
-
-def getURL():
-    randPoem = random.choice(allPoems)
-    return randPoem[3]
-
-
-def tap():
-    # print a random poem
-    return printPoem()
-
-
-def hold():
-    return ('Goodbye!')
-
+import requests
+from bs4 import BeautifulSoup
+from markupsafe import Markup
 
 # Load up all poems from CSV
 # poem CSV is structured with the columns: number,title,author,poem,book
@@ -60,7 +20,48 @@ def hold():
 with open('poembot_poems_2020.csv') as csvPoems:
     allPoems = list(csv.reader(csvPoems, delimiter=','))
 
+
+def getURL():
+    randPoem = random.choice(allPoems)
+    return randPoem[3]
+
+
 # Start printing
 print('Hello!')
 print('Ready to print')
-tap()
+
+
+def getbs4Poems():
+    """
+    scrapePoems from poems.org url given in CSV file by calling getURL() from poemBot module
+    Returns:
+        [array]: [contains poem title, author, date, poem, url]
+    """
+    URL = str(getURL())
+    r = requests.get(URL)
+    # If this line causes an error, run 'pip install html5lib' or install html5lib
+    soup = BeautifulSoup(r.content, 'html5lib')
+    # Escape HTML to make it render in flask
+    poem = Markup(
+        str(soup.find('div', attrs={'class': 'poem__body px-md-4 font-serif'})))
+    title = Markup(
+        str(soup.find('h1', attrs={'class': 'card-title'}).contents[0]))
+    date = Markup(
+        str(soup.find('span', attrs={'class': 'dates'})))
+    author = Markup(
+        str(soup.find('a', attrs={'itemprop': 'author'})))
+
+    # instructions = recipeSoup.find("span", itemprop="name")
+    url = str(URL)
+    # handle poem's whose URL has changed and can't scrape poem info
+    if date == None:
+        date = " "
+    if author == None:
+        # card-subtitle
+        author = Markup(
+            str(soup.find('a', attrs={'itemprop': 'card-subtitle'})))
+    if title == None:
+        title = "Sorry, this poem's URL has changed"
+    print('author', author)
+
+    return [title, author, date, poem, url]
