@@ -17,3 +17,7 @@ Run the following commands:
 ## Deploying to cloud
 
 gcloud app deploy
+
+## Todo
+
+1. add bs4 library to /libs directory since App Engine doesn't support impure python packages
