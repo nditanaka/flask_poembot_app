@@ -4,3 +4,5 @@ requests
 markupsafe
 beautifulsoup4
 requests
+google-api-python-client
+html5lib
